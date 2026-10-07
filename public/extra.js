@@ -60,3 +60,66 @@ showPhotos=function(c){
 showCalendar=function(c){
   PHONE_CALENDAR.forEach(x=>{const card=el('div','card');card.innerHTML='<b>'+x[0]+'</b><div>'+x[1]+'</div>';c.append(card)});
 };
+
+
+// Galeria visual integrada ao caso
+const REAL_GALLERY=[
+ {title:'IMG_0841 - almoço de família',date:'17/08/2025 · 12:43',src:'assets/lock.webp'},
+ {title:'IMG_0846 - planta nova da sala',date:'17/08/2025 · 15:12',src:'assets/home.webp'},
+ {title:'IMG_0901 - café da manhã',date:'16/08/2025 · 09:27',src:'assets/cafe.webp'},
+ {title:'IMG_0916 - confraternização Orbe',date:'15/08/2025 · 21:34',src:'assets/party.webp'},
+ {title:'IMG_0928 - academia espelho',date:'15/08/2025 · 18:52',src:'assets/gym.webp'},
+ {title:'IMG_1026 - documentos mesa',date:'14/08/2025 · 16:08',src:'assets/contracts.webp'}
+];
+
+const GALLERY_CAPTURES=[
+ {title:'Captura - contrato 417',date:'14/08/2025 · 16:10',type:'doc',lines:['CONTRATO 417','Revisar fornecedor','antes de segunda']},
+ {title:'Captura - contrato 422',date:'14/08/2025 · 16:12',type:'doc',lines:['CONTRATO 422','Minuta revisada','Jurídico · pendente']},
+ {title:'Captura - fornecedor 431',date:'17/08/2025 · 17:04',type:'doc',lines:['FORNECEDOR 431','Dados bancários','CONFERIR']},
+ {title:'Screenshot - conversa Helena',date:'17/08/2025 · 20:53',type:'chat',lines:['Helena','Você está bem?','depois te ligo']},
+ {title:'Screenshot - previsão do tempo',date:'17/08/2025 · 08:02',type:'weather',lines:['Santa Aurora','24°','Parcialmente nublado']},
+ {title:'Captura - mapa Jardim Imperial',date:'17/08/2025 · 18:06',type:'map',lines:['Jardim Imperial','Rua das Acácias','rota salva']}
+];
+
+function galleryCapture(x){
+ const d=el('div','');
+ d.style.cssText='width:100%;aspect-ratio:1/1;border-radius:10px;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:12px;font-weight:700;line-height:1.55;overflow:hidden;';
+ if(x.type==='chat')d.style.background='linear-gradient(145deg,#dff4df,#b8e5bd)';
+ else if(x.type==='weather')d.style.background='linear-gradient(145deg,#6da8f4,#d5eaff)';
+ else if(x.type==='map')d.style.background='linear-gradient(135deg,#dce7d6 25%,#f2f4ed 25%,#f2f4ed 50%,#dce7d6 50%,#dce7d6 75%,#f2f4ed 75%)';
+ else d.style.background='linear-gradient(145deg,#faf5e9,#e9dcc2)';
+ d.innerHTML=x.lines.map(v=>'<span>'+v+'</span>').join('');
+ return d;
+}
+
+function openGalleryPhoto(c,p){
+ const v=el('div','photo-viewer');
+ const img=document.createElement('img');img.src=p.src;img.alt=p.title;
+ const bar=el('div','viewerbar');
+ const back=el('button','','‹ Voltar');back.onclick=()=>v.remove();
+ const meta=el('div','viewertext');meta.innerHTML='<b>'+p.title+'</b><span class="muted" style="color:#aaa">'+p.date+'</span>';
+ bar.append(back,meta);v.append(img,bar);c.parentElement.append(v);
+}
+
+showPhotos=function(c){
+ const q=el('input','search');q.placeholder='Buscar na galeria';
+ const grid=el('div','gallery-grid');c.append(q,grid);
+ function draw(){
+   const term=norm(q.value);grid.innerHTML='';
+   REAL_GALLERY.filter(p=>!term||norm(p.title).includes(term)).forEach(p=>{
+     const item=el('div','gallery-item'),img=document.createElement('img');
+     img.src=p.src;img.alt=p.title;img.loading='lazy';
+     item.append(img,el('b','',p.title),el('div','muted',p.date));
+     item.onclick=()=>openGalleryPhoto(c,p);grid.append(item);
+   });
+   GALLERY_CAPTURES.filter(p=>!term||norm(p.title+' '+p.lines.join(' ')).includes(term)).forEach(p=>{
+     const item=el('div','gallery-item');
+     item.append(galleryCapture(p),el('b','',p.title),el('div','muted',p.date));
+     grid.append(item);
+   });
+ }
+ q.oninput=draw;draw();
+};
+
+// Reaplica a home com a lista atual de apps quando esta camada termina de carregar.
+if(state.unlocked)home();
