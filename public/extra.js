@@ -68,7 +68,7 @@ const REAL_GALLERY=[
  {title:'IMG_0846 - planta nova da sala',date:'17/08/2025 · 15:12',src:'assets/home.webp'},
  {title:'IMG_0901 - café da manhã',date:'16/08/2025 · 09:27',src:'assets/cafe.webp'},
  {title:'IMG_0916 - confraternização Orbe',date:'15/08/2025 · 21:34',src:'assets/party.webp'},
- {title:'IMG_0928 - academia espelho',date:'15/08/2025 · 18:52',src:'assets/gym.webp'},
+ {title:'IMG_0928 - academia espelho',date:'15/08/2025 · 18:52',src:'assets/gym_hq.webp'},
  {title:'IMG_1026 - documentos mesa',date:'14/08/2025 · 16:08',src:'assets/contracts.webp'}
 ];
 
