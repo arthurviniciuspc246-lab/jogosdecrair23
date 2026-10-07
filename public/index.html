@@ -93,5 +93,5 @@ function finalReport(c){const sol=state.solved;if(!sol){c.innerHTML='<h2>Acesso 
 function showSettings(c){c.classList.add('settings');const b=el('button','',state.mute?'Som: desativado':'Som: ativado');b.onclick=function(){state.mute=!state.mute;save();b.textContent=state.mute?'Som: desativado':'Som: ativado'};const r=el('button','danger','REINICIAR INVESTIGAÇÃO');r.onclick=function(){if(confirm('Reiniciar todo o progresso?')&&confirm('Esta ação apaga evidências marcadas e tentativas. Continuar?')){localStorage.removeItem('c27061');location.reload()}};c.append(b,r)}
 if(state.unlocked)home();else lock();
 </script>
-<script src="extra.js"></script></body>
+<script src="extra.js"></script><script src="patch.js"></script></body>
 </html>
